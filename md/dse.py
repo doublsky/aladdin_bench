@@ -8,7 +8,6 @@ import pandas as pd
 
 summary_filename = "md_summary"
 make_cmd = 'make CPPFLAGS="-DnAtoms={} -DmaxNeighbors={}" run-trace'
-print "TRACER_HOME:", os.environ["TRACER_HOME"]
 
 for num_atoms in [16, 32, 64]:
     for num_simd_lanes in [1, 2, 3]:
@@ -51,6 +50,7 @@ for num_atoms in [16, 32, 64]:
 
             aladdin_bin = os.path.join(aladdin_home, "common/aladdin")
             aladdin_cmd = [aladdin_bin, "md", "dynamic_trace.gz", "config"]
+            sp.check_call(aladdin_cmd)
 
             # process summary
-            summary = pd.read_table(summary_filename, sep=":\s*", skiprows=3, skipfooter=3)
+            summary = pd.read_table(summary_filename, sep=":\s*", skiprows=3, skipfooter=3, engine="python")
