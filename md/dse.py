@@ -45,6 +45,17 @@ for num_atoms in [16, 32, 64]:
                 num_simd_lanes
             )
 
+            config_content = "partition,cyclic,d_force_x,256,4,1\n"
+            config_content += "partition,cyclic,d_force_y,256,4,1\n"
+            config_content += "partition,cyclic,d_force_z,256,4,1\n"
+            config_content += "partition,cyclic,position_x,256,4,{}\n".format(num_simd_lanes)
+            config_content += "partition,cyclic,position_y,256,4,{}\n".format(num_simd_lanes)
+            config_content += "partition,cyclic,position_z,256,4,{}\n".format(num_simd_lanes)
+            config_content += "partition,cyclic,NL,16384,4,{}\n".format(num_simd_lanes)
+            config_content += "unrolling,md,loop_j,{}\n".format(num_simd_lanes)
+            config_content += "pipelining,1\n"
+            config_content += "cycle_time,{}\n".format(cycle_time)
+
             with open("config", "w") as f:
                 f.write(config_content)
 
