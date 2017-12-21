@@ -8,6 +8,7 @@ import pandas as pd
 
 summary_filename = "md_summary"
 make_cmd = 'make CPPFLAGS="-DnAtoms={} -DmaxNeighbors={}" run-trace'
+print "TRACER_HOME:", os.environ["TRACER_HOME"]
 
 for num_atoms in [16, 32, 64]:
     for num_simd_lanes in [1, 2, 3]:
