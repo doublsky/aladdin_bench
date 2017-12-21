@@ -47,4 +47,4 @@ for num_atoms in [16]:
             # process summary
             summary = pd.read_table(summary_filename, sep=":\s*", skiprows=3, skipfooter=3, engine="python")
             summary = summary.transpose()
-            summary.to_csv("md_na{}_nl{}_ct{}.txt".format(num_atoms, num_simd_lanes,cycle_time))
+            summary.to_csv("md_dse.txt")
