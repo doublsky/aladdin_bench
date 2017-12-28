@@ -7,6 +7,8 @@ import os
 import pandas as pd
 import logging
 
+logging.basicConfig(level=logging.DEBUG)
+
 summary_filename = "md_summary"
 dse_filename = "md_dse.txt"
 
