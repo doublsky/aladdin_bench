@@ -55,7 +55,7 @@ for num_atoms in [16]:
                 skiprows=3,
                 skipfooter=3,
                 engine="python",
-                names=["param", "value"]
+                index_col=0
             )
             summary.set_index("param")
             summary = summary.transpose()
@@ -63,7 +63,7 @@ for num_atoms in [16]:
             summary["num_simd_lanes"] = num_simd_lanes
             summary["cycle_time"] = cycle_time
             logging.debug(summary)
-            dse_df.append(summary)
+            dse_df = dse_df.append(summary)
             logging.debug(dse_df)
 
 dse_df.to_csv(dse_filename)
