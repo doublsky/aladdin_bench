@@ -99,6 +99,27 @@ inline void insertInOrder(TYPE currDist[maxNeighbors],
 	currList[dist]  = j;
 }
 
+int populateNeighborList(TYPE currDist[maxNeighbors],
+		int currList[maxNeighbors],
+		const int i,
+		int NL[nAtoms][maxNeighbors])
+{
+	int idx, validPairs, distanceIter, neighborIter;
+	idx = 0; validPairs = 0;
+	//distanceIter = 0;
+	for (neighborIter = 0; neighborIter < maxNeighbors; neighborIter++){
+		//if(currList[neighborIter] == -1){
+		//	break;
+		//}
+		NL[i][neighborIter] = currList[neighborIter];
+		//if (currDist[distanceIter] < cutsq)
+		validPairs++;
+		//idx++;
+		//distanceIter++;
+	}
+	return validPairs;
+}
+
 int buildNeighborList(TYPE position_x[nAtoms],
 		TYPE position_y[nAtoms],
 		TYPE position_z[nAtoms],
@@ -129,27 +150,6 @@ int buildNeighborList(TYPE position_x[nAtoms],
 	}
 	printf("total pairs - %i \n", totalPairs);
 	return totalPairs;
-}
-
-int populateNeighborList(TYPE currDist[maxNeighbors],
-		int currList[maxNeighbors],
-		const int i,
-		int NL[nAtoms][maxNeighbors])
-{
-	int idx, validPairs, distanceIter, neighborIter;
-	idx = 0; validPairs = 0;
-	//distanceIter = 0;
-	for (neighborIter = 0; neighborIter < maxNeighbors; neighborIter++){
-		//if(currList[neighborIter] == -1){
-		//	break;
-		//}
-		NL[i][neighborIter] = currList[neighborIter];
-		//if (currDist[distanceIter] < cutsq)
-		validPairs++;
-		//idx++;
-		//distanceIter++;
-	}
-	return validPairs;
 }
 
 int main(){
