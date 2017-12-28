@@ -30,7 +30,7 @@ if __name__ == "__main__":
                 # compile with different num_atoms
                 make_cmd = [
                     "make",
-                    'CPPFLAGS="-DnAtoms={} -DmaxNeighbors={}"'.format(num_atoms, num_atoms),
+                    "CPPFLAGS=-DnAtoms={}".format(num_atoms),
                     "run-trace"
                 ]
                 sp.check_call(make_cmd)
