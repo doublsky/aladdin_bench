@@ -57,7 +57,6 @@ for num_atoms in [16]:
                 engine="python",
                 index_col=0
             )
-            summary.set_index("param")
             summary = summary.transpose()
             summary["num_atoms"] = num_atoms
             summary["num_simd_lanes"] = num_simd_lanes
