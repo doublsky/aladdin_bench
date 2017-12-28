@@ -51,6 +51,7 @@ for num_atoms in [16]:
             summary["num_atoms"] = num_atoms
             summary["num_simd_lanes"] = num_simd_lanes
             summary["cycle_time"] = cycle_time
+            print summary
             dse_df.append(summary)
 
 dse_df.to_csv(dse_filename)
