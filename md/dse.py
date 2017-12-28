@@ -25,7 +25,7 @@ if __name__ == "__main__":
         for num_simd_lanes in range(1, 2):
             for cycle_time in range(1, 2):
                 # clean
-                sp.check_call(["make", "clean"])
+                sp.check_call(["make", "clean-trace"])
 
                 # compile with different num_atoms
                 make_cmd = [
