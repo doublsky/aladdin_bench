@@ -16,8 +16,7 @@ void md(TYPE d_force_x[nAtoms], TYPE d_force_y[nAtoms], TYPE d_force_z[nAtoms],
 	dmaLoad(&position_z[0], 0, nAtoms*sizeof(TYPE));
 	dmaLoad(&NL[0], 0, (nAtoms)*(maxNeighbors)*sizeof(TYPE));
 #endif
-	int i, j, jidx;
-	TYPE delx, dely, delz, r2inv, r2invTEMP, r2invTEMP2, r2invTEMP3, t1, t2, t3;
+	int i, j;
 	loop_i : for (i = 0; i < nAtoms; i++)
   {
     TYPE i_x = position_x[i];
@@ -28,6 +27,8 @@ void md(TYPE d_force_x[nAtoms], TYPE d_force_y[nAtoms], TYPE d_force_z[nAtoms],
     TYPE fz = 0;
     loop_j : for( j = 0; j < maxNeighbors; j++)
     {
+      int jidx;
+      TYPE delx, dely, delz, r2inv, r2invTEMP, r2invTEMP2, r2invTEMP3, t1, t2, t3;
       jidx = NL[i*(nAtoms) + j];
       TYPE j_x = position_x[jidx];
       TYPE j_y = position_y[jidx];
