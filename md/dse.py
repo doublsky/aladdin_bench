@@ -38,13 +38,13 @@ if __name__ == "__main__":
                     raise Exception("ALADDION_HOME not defined")
 
                 # create config file
-                config_content = "partition,cyclic,d_force_x,256,4,1\n"
-                config_content += "partition,cyclic,d_force_y,256,4,1\n"
-                config_content += "partition,cyclic,d_force_z,256,4,1\n"
-                config_content += "partition,cyclic,position_x,256,4,{}\n".format(num_simd_lanes)
-                config_content += "partition,cyclic,position_y,256,4,{}\n".format(num_simd_lanes)
-                config_content += "partition,cyclic,position_z,256,4,{}\n".format(num_simd_lanes)
-                config_content += "partition,cyclic,NL,16384,4,{}\n".format(num_simd_lanes)
+                config_content = "partition,cyclic,d_force_x,{},4,1\n".format(num_atoms * 4)
+                config_content += "partition,cyclic,d_force_y,{},4,1\n".format(num_atoms * 4)
+                config_content += "partition,cyclic,d_force_z,{},4,1\n".format(num_atoms * 4)
+                config_content += "partition,cyclic,position_x,{},4,{}\n".format(num_atoms * 4, num_simd_lanes)
+                config_content += "partition,cyclic,position_y,{},4,{}\n".format(num_atoms * 4, num_simd_lanes)
+                config_content += "partition,cyclic,position_z,{},4,{}\n".format(num_atoms * 4, num_simd_lanes)
+                config_content += "partition,cyclic,NL,{},4,{}\n".format(num_atoms * num_atoms * 4, num_simd_lanes)
                 config_content += "unrolling,md,loop_j,{}\n".format(num_simd_lanes)
                 config_content += "pipelining,1\n"
                 config_content += "cycle_time,{}\n".format(cycle_time)
