@@ -15,7 +15,7 @@ dse_filename = "md_dse.txt"
 dse_df = pd.DataFrame()
 for num_atoms in [16]:
     for num_simd_lanes in [1]:
-        for cycle_time in range(1, 2):
+        for cycle_time in range(1, 3):
             # compile with different num_atoms
             make_cmd = [
                 "make",
@@ -51,6 +51,7 @@ for num_atoms in [16]:
             # process summary
             summary = pd.read_table(
                 summary_filename,
+                header=None,
                 sep=":\s*",
                 skiprows=3,
                 skipfooter=3,
