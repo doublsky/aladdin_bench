@@ -7,8 +7,9 @@ import os
 import pandas as pd
 
 summary_filename = "md_summary"
-make_cmd = 'make CPPFLAGS="-DnAtoms={} -DmaxNeighbors={}" run-trace'
+dse_filename = "md_dse.txt"
 
+dse_df = pd.DataFrame()
 for num_atoms in [16]:
     for num_simd_lanes in [1]:
         for cycle_time in range(1, 2):
@@ -47,4 +48,9 @@ for num_atoms in [16]:
             # process summary
             summary = pd.read_table(summary_filename, sep=":\s*", skiprows=3, skipfooter=3, engine="python")
             summary = summary.transpose()
-            summary.to_csv("md_dse.txt")
+            summary["num_atoms"] = num_atoms
+            summary["num_simd_lanes"] = num_simd_lanes
+            summary["cycle_time"] = cycle_time
+            dse_df.append(summary)
+
+dse_df.to_csv(dse_filename)
