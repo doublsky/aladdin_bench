@@ -13,9 +13,9 @@ summary_filename = "md_summary"
 dse_filename = "md_dse.csv"
 
 dse_df = pd.DataFrame()
-for num_atoms in [16]:
-    for num_simd_lanes in [1]:
-        for cycle_time in range(1, 3):
+for num_atoms in [16, 32, 64]:
+    for num_simd_lanes in range(1, 5):
+        for cycle_time in range(1, 7):
             # compile with different num_atoms
             make_cmd = [
                 "make",
