@@ -68,6 +68,7 @@ for num_atoms in [16]:
 
 # calculate energy per bit
 dse_df.apply(pd.to_numeric, errors="ignore")
+logging.debug(dse_df.dtypes)
 total_energy = dse_df["Avg Power (mW)"] * dse_df["Cycle (cycles)"] * dse_df["Cycle Time (ns)"]
 total_input_bits = dse_df["Num of Atoms"] * 3 * 32 + dse_df["Num of Atoms"] * dse_df["Num of Atoms"] * 32
 total_output_bits = dse_df["Num of Atoms"] * 3 * 32
