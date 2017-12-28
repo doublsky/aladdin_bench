@@ -7,10 +7,10 @@ import os
 import pandas as pd
 import logging
 
-logging.basicConfig(level=logging.DEBUG)
+#logging.basicConfig(level=logging.DEBUG)
 
 summary_filename = "md_summary"
-dse_filename = "md_dse.txt"
+dse_filename = "md_dse.csv"
 
 dse_df = pd.DataFrame()
 for num_atoms in [16]:
@@ -59,11 +59,17 @@ for num_atoms in [16]:
                 index_col=0
             )
             summary = summary.transpose()
-            summary["num_atoms"] = num_atoms
-            summary["num_simd_lanes"] = num_simd_lanes
-            summary["cycle_time"] = cycle_time
+            summary["Num of Atoms"] = num_atoms
+            summary["Num of SIMD Lanes"] = num_simd_lanes
+            summary["Cycle Time (ns)"] = cycle_time
             logging.debug(summary)
             dse_df = dse_df.append(summary)
             logging.debug(dse_df)
 
-dse_df.to_csv(dse_filename)
+# calculate energy per bit
+total_energy = dse_df["Avg Power (mW)"] * dse_df["Cycle (cycles)"] * dse_df["Cycle Time (ns)"]
+total_input_bits = dse_df["Num of Atoms"] * 3 * 32 + dse_df["Num of Atoms"] * dse_df["Num of Atoms"] * 32
+total_output_bits = dse_df["Num of Atoms"] * 3 * 32
+dse_df["Energy per Input (pJ/bit)"] = total_energy / total_input_bits
+dse_df["Energy per Output (pJ/bit)"] = total_energy / total_output_bits
+dse_df.to_csv(dse_filename, index=False)
