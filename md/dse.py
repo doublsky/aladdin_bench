@@ -5,6 +5,7 @@ Sweep md
 import subprocess as sp
 import os
 import pandas as pd
+import logging
 
 summary_filename = "md_summary"
 dse_filename = "md_dse.txt"
@@ -46,12 +47,21 @@ for num_atoms in [16]:
             sp.check_call(aladdin_cmd)
 
             # process summary
-            summary = pd.read_table(summary_filename, sep=":\s*", skiprows=3, skipfooter=3, engine="python")
+            summary = pd.read_table(
+                summary_filename,
+                sep=":\s*",
+                skiprows=3,
+                skipfooter=3,
+                engine="python",
+                names=["param", "value"]
+            )
+            summary.set_index("param")
             summary = summary.transpose()
             summary["num_atoms"] = num_atoms
             summary["num_simd_lanes"] = num_simd_lanes
             summary["cycle_time"] = cycle_time
-            print summary
+            logging.debug(summary)
             dse_df.append(summary)
+            logging.debug(dse_df)
 
 dse_df.to_csv(dse_filename)
