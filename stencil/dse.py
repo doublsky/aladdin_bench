@@ -22,8 +22,8 @@ def calc_energy(df):
 if __name__ == "__main__":
     dse_df = pd.DataFrame()
     for N in [32]:
-        for num_simd_lanes in range(1, 2):
-            for cycle_time in range(1, 3):
+        for num_simd_lanes in range(1, 3):
+            for cycle_time in range(1, 2):
                 # clean
                 sp.check_call(["make", "clean-trace"])
 
