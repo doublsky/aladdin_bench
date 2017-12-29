@@ -52,7 +52,7 @@ if __name__ == "__main__":
                     f.write(config_content)
 
                 aladdin_bin = os.path.join(aladdin_home, "common/aladdin")
-                aladdin_cmd = [aladdin_bin, "md", "dynamic_trace.gz", "config"]
+                aladdin_cmd = [aladdin_bin, "stencil", "dynamic_trace.gz", "config"]
                 sp.check_call(aladdin_cmd)
 
                 # process summary
