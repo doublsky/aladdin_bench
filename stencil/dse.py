@@ -41,7 +41,7 @@ if __name__ == "__main__":
                     raise Exception("ALADDION_HOME not defined")
 
                 # create config file
-                config_content = "partition,cyclic,orig,{},4,{}\n".format(N * N * 4, num_simd_lanes)
+                config_content = "partition,cyclic,orig,{},4,{}\n".format(N * N * 4, num_simd_lanes * 9)
                 config_content += "partition,cyclic,sol,{},4,{}\n".format(N * N * 4, num_simd_lanes)
                 config_content += "partition,complete,filter,{}\n".format(3 * 3 * 4)
                 config_content += "unrolling,stencil,inner,{}\n".format(num_simd_lanes)
