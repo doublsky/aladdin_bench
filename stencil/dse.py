@@ -43,7 +43,7 @@ if __name__ == "__main__":
                 # create config file
                 config_content = "partition,cyclic,orig,{},4,{}\n".format(N * N * 4, num_simd_lanes)
                 config_content += "partition,cyclic,sol,{},4,{}\n".format(N * N * 4, num_simd_lanes)
-                config_content += "partition,cyclic,filter,{},4,{}\n".format(3 * 3 * 4, num_simd_lanes)
+                config_content += "partition,complete,filter,{}\n".format(3 * 3 * 4)
                 config_content += "unrolling,stencil,inner,{}\n".format(num_simd_lanes)
                 config_content += "pipelining,1\n"
                 config_content += "cycle_time,{}\n".format(cycle_time)
