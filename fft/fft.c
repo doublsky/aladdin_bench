@@ -54,7 +54,7 @@ void step2(TYPE work_x[], TYPE work_y[], TYPE DATA_x[],
 {
 	int tid, hi, lo, i, j, stride;
 	stride = THREADS;
-  outer:for(tid = 0; tid < 64; tid++){
+  outer:for(tid = 0; tid < THREADS; tid++){
     load:for(i = 0; i < 8; i ++){
 			data_x[i] = DATA_x[tid*8 + i];
 			//data_y[i] = DATA_y[tid*8 + i];
@@ -76,7 +76,7 @@ void step3(TYPE work_x[], TYPE work_y[], TYPE DATA_x[],
 {
 	int tid, hi, lo, i, j, stride;
 	stride = THREADS;
-  outer:for(tid = 0; tid < 64; tid++){
+  outer:for(tid = 0; tid < THREADS; tid++){
     load:for(i = 0; i < 8; i ++){
 			data_x[i] = DATA_x[tid*8 + i];
 			//data_y[i] = DATA_y[tid*8 + i];
@@ -101,7 +101,7 @@ void step4(TYPE work_x[], TYPE work_y[], TYPE DATA_x[],
 {
 	int tid, hi, lo, i, j, stride;
 	stride = THREADS;
-  outer:for(tid = 0; tid < 64; tid++){
+  outer:for(tid = 0; tid < THREADS; tid++){
     load:for(i = 0; i < 8; i ++){
 			//data_x[i] = DATA_x[tid*8 + i];
 			data_y[i] = DATA_y[tid*8 + i];
@@ -123,7 +123,7 @@ void step5(TYPE work_x[], TYPE work_y[], TYPE DATA_x[],
 
 	int tid, hi, lo, i, j, stride;
 	stride = THREADS;
-  outer:for(tid = 0; tid < 64; tid++){
+  outer:for(tid = 0; tid < THREADS; tid++){
     load:for(i = 0; i < 8; i ++){
 			//data_x[i] = DATA_x[tid*8 + i];
 			data_y[i] = DATA_y[tid*8 + i];
@@ -150,7 +150,7 @@ void step6(TYPE work_x[], TYPE work_y[], TYPE DATA_x[],
 	int tid, hi, lo, i, j, stride;
 	stride = THREADS;
 
-  outer:for(tid = 0; tid < 64; tid++){
+  outer:for(tid = 0; tid < THREADS; tid++){
 		//Reload data post-transpose...
     load:for(i = 0; i < 8; i ++){
 			data_x[i] = DATA_x[tid*8 + i];
@@ -194,7 +194,7 @@ void step7(TYPE work_x[], TYPE work_y[], TYPE DATA_x[],
 	int tid, hi, lo, i, j, stride;
 	stride = THREADS;
 	//Transpose..
-  outer:for(tid = 0; tid < 64; tid++){
+  outer:for(tid = 0; tid < THREADS; tid++){
     load:for(i = 0; i < 8; i ++){
 			data_x[i] = DATA_x[tid*8 + i];
 			//data_y[i] = DATA_y[tid*8 + i];
@@ -217,7 +217,7 @@ void step8(TYPE work_x[], TYPE work_y[], TYPE DATA_x[],
 	int tid, hi, lo, i, j, stride;
 	stride = THREADS;
 
-  outer:for(tid = 0; tid < 64; tid++){
+  outer:for(tid = 0; tid < THREADS; tid++){
     load:for(i = 0; i < 8; i ++){
 			data_x[i] = DATA_x[tid*8 + i];
 			//data_y[i] = DATA_y[tid*8 + i];
@@ -244,7 +244,7 @@ void step9(TYPE work_x[], TYPE work_y[], TYPE DATA_x[],
 
 	int tid, hi, lo, i, j, stride;
 	stride = THREADS;
-  outer:for(tid = 0; tid < 64; tid++){
+  outer:for(tid = 0; tid < THREADS; tid++){
     load:for(i = 0; i < 8; i ++){
 			//data_x[i] = DATA_x[tid*8 + i];
 			data_y[i] = DATA_y[tid*8 + i];
@@ -267,7 +267,7 @@ void step10(TYPE work_x[], TYPE work_y[], TYPE DATA_x[],
 
 	int tid, hi, lo, i, j, stride;
 	stride = THREADS;
-  outer:for(tid = 0; tid < 64; tid++){
+  outer:for(tid = 0; tid < THREADS; tid++){
     load:for(i = 0; i < 8; i ++){
 			//data_x[i] = DATA_x[tid*8 + i];
 			data_y[i] = DATA_y[tid*8 + i];
@@ -294,7 +294,7 @@ void step11(TYPE work_x[], TYPE work_y[], TYPE DATA_x[],
 
 	int tid, hi, lo, i, j, stride;
 	stride = THREADS;
-  outer:for(tid = 0; tid < 64; tid++){
+  outer:for(tid = 0; tid < THREADS; tid++){
 		//Load post-trans
     load:for(i = 0; i < 8; i ++){
 			data_x[i] = DATA_x[tid*8 + i];
