@@ -16,7 +16,7 @@
 //#define M_PI 3.14159265358979323846f
 #define MM_SQRT1_2      0.70710678118654752440f
 
-#define THREADS 64
+//#define THREADS 64
 
 #define cmplx_M_x(a_x, a_y, b_x, b_y) (a_x*b_x - a_y *b_y)
 #define cmplx_M_y(a_x, a_y, b_x, b_y) (a_x*b_y + a_y *b_x)
