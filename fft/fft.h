@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <math.h>
 
-#define THREADS 64
+//#define THREADS 64
 
 //#define TYPE double
 //#define TYPE float
