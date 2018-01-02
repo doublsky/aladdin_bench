@@ -21,9 +21,9 @@ def calc_energy(df):
 
 if __name__ == "__main__":
     dse_df = pd.DataFrame()
-    for THREADS in [32, 64, 128]:
+    for THREADS in [64]:
         for num_simd_lanes in range(1, 2):
-            for cycle_time in range(1, 2):
+            for cycle_time in range(1, 7):
                 # clean
                 sp.check_call(["make", "clean-trace"])
 
