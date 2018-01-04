@@ -4,14 +4,13 @@
 #include "gem5/dma_interface.h"
 #endif
 
-void bb_gemm(double x[N], double y[N], double z[N]){
+void bb_gemm(int x[N], int y[N], int z[N]){
 #ifdef DMA_MODE
-  dmaLoad(&x[0], 0, ROWSIZE*BLOCKSIZE*sizeof(double));
-  dmaLoad(&y[0], 0, BLOCKSIZE*BLOCKSIZE*sizeof(double));
-  dmaLoad(&z[0], 0, ROWSIZE*BLOCKSIZE*sizeof(double));
+  dmaLoad(&x[0], 0, ROWSIZE*BLOCKSIZE*sizeof(int));
+  dmaLoad(&y[0], 0, BLOCKSIZE*BLOCKSIZE*sizeof(int));
+  dmaLoad(&z[0], 0, ROWSIZE*BLOCKSIZE*sizeof(int));
 #endif
-  int i, k, j;
-  double temp_x;
+  int i, k, j, temp_x;
 	loopi:for ( i = 0; i < ROWSIZE; ++i){
 		loopk:for (k = 0; k < BLOCKSIZE; ++k){
 	      		temp_x = x[i * ROWSIZE + k];
@@ -22,28 +21,28 @@ void bb_gemm(double x[N], double y[N], double z[N]){
       		}
 	}
 #ifdef DMA_MODE
-	dmaStore(&z[0], 0, ROWSIZE*BLOCKSIZE*sizeof(double));
+	dmaStore(&z[0], 0, ROWSIZE*BLOCKSIZE*sizeof(int));
 #endif
 }
-void print(double *a, int size)
+void print(int *a, int size)
 {
 	int i;
 
 	for (i = 0; i < size; i++)
-		printf("%f\t", a[i]);
+		printf("%u\t", a[i]);
 }
 
 int main()
 {
 	int i;
-  double  *x;
-  double *y;
-  double *z;
-  x = (double*) malloc(sizeof(double) * N); //ROWSIZE * BLOCKSIZE
-  y = (double*) malloc(sizeof(double) * N); //BLOCKSIZE * BLOCKSIZE
-  z = (double*) malloc(sizeof(double) * N);
+  int  *x;
+  int *y;
+  int *z;
+  x = (int*) malloc(sizeof(int) * N); //ROWSIZE * BLOCKSIZE
+  y = (int*) malloc(sizeof(int) * N); //BLOCKSIZE * BLOCKSIZE
+  z = (int*) malloc(sizeof(int) * N);
 
-  double max, min;
+  int max, min;
 	srand(8650341L);
   max = 128;
   min = 0;
