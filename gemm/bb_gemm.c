@@ -6,22 +6,22 @@
 
 void bb_gemm(int x[N], int y[N], int z[N]){
 #ifdef DMA_MODE
-  dmaLoad(&x[0], 0, ROWSIZE*BLOCKSIZE*sizeof(int));
-  dmaLoad(&y[0], 0, BLOCKSIZE*BLOCKSIZE*sizeof(int));
-  dmaLoad(&z[0], 0, ROWSIZE*BLOCKSIZE*sizeof(int));
+  dmaLoad(&x[0], 0, (N)*sizeof(int));
+  dmaLoad(&y[0], 0, (N)*sizeof(int));
+  dmaLoad(&z[0], 0, (N)*sizeof(int));
 #endif
   int i, k, j, temp_x;
-	loopi:for ( i = 0; i < ROWSIZE; ++i){
-		loopk:for (k = 0; k < BLOCKSIZE; ++k){
-	      		temp_x = x[i * ROWSIZE + k];
+	loopi:for ( i = 0; i < (BLOCKSIZE); ++i){
+		loopk:for (k = 0; k < (BLOCKSIZE); ++k){
+	      		temp_x = x[i * (BLOCKSIZE) + k];
 			loopj:for (j = 0; j < BLOCKSIZE; ++j){
-	      			z[i * ROWSIZE + j] += temp_x * y[k*ROWSIZE + j];
+	      			z[i * (BLOCKSIZE) + j] += temp_x * y[k*(BLOCKSIZE) + j];
       			}
 
       		}
 	}
 #ifdef DMA_MODE
-	dmaStore(&z[0], 0, ROWSIZE*BLOCKSIZE*sizeof(int));
+	dmaStore(&z[0], 0, (N)*sizeof(int));
 #endif
 }
 void print(int *a, int size)
@@ -44,8 +44,8 @@ int main()
 
   int max, min;
 	srand(8650341L);
-  max = 128;
-  min = 0;
+  max = 1000000000;
+  min = -1000000000;
   for(i=0; i<N; i++){
     x[i] = (TYPE)(((double) rand() / (RAND_MAX)) * (max-min) + min);
     y[i] = (TYPE)(((double) rand() / (RAND_MAX)) * (max-min) + min);

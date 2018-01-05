@@ -23,7 +23,7 @@ def calc_energy(df):
 
 if __name__ == "__main__":
     dse_df = pd.DataFrame()
-    for row_size, block_size in [(32, 8)]:
+    for block_size in [8]:
         for num_simd_lanes in range(1, 2):
             for cycle_time in range(1, 2):
                 # clean
@@ -43,9 +43,9 @@ if __name__ == "__main__":
                     raise Exception("ALADDION_HOME not defined")
 
                 # create config file
-                config_content = "partition,cyclic,x,{},4,{}\n".format(row_size * row_size * 4, num_simd_lanes)
-                config_content += "partition,cyclic,y,{},4,{}\n".format(row_size * row_size * 4, num_simd_lanes)
-                config_content += "partition,cyclic,z,{},4,{}\n".format(row_size * row_size * 4, num_simd_lanes)
+                config_content = "partition,cyclic,x,{},4,{}\n".format(block_size * block_size * 4, num_simd_lanes)
+                config_content += "partition,cyclic,y,{},4,{}\n".format(block_size * block_size * 4, num_simd_lanes)
+                config_content += "partition,cyclic,z,{},4,{}\n".format(block_size * block_size * 4, num_simd_lanes)
                 config_content += "unrolling,bb_gemm,loopj,{}\n".format(num_simd_lanes)
                 config_content += "pipelining,1\n"
                 config_content += "cycle_time,{}\n".format(cycle_time)
@@ -68,7 +68,7 @@ if __name__ == "__main__":
                     index_col=0
                 )
                 summary = summary.transpose()
-                summary["Row Size"] = row_size
+                summary["Row Size"] = block_size
                 summary["Block Size"] = block_size
                 summary["Num of SIMD Lanes"] = num_simd_lanes
                 summary["Cycle Time (ns)"] = cycle_time
