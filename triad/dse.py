@@ -6,8 +6,8 @@ import subprocess as sp
 import os
 import pandas as pd
 
-dse_filename = "bb_gemm_dse.csv"
-summary_filename = "bb_gemm_summary"
+dse_filename = "triad_dse.csv"
+summary_filename = "triad_summary"
 
 
 def calc_energy(df):
