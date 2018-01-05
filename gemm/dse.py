@@ -23,7 +23,7 @@ def calc_energy(df):
 
 if __name__ == "__main__":
     dse_df = pd.DataFrame()
-    for block_size in [16, 32, 64]:
+    for block_size in [8, 16, 32]:
         for num_simd_lanes in range(1, 2):
             for cycle_time in range(1, 2):
                 # clean
