@@ -34,7 +34,7 @@ if __name__ == "__main__":
             # create config file
             config_content = "partition,cyclic,a,8192,4,{}\n".format(num_simd_lanes)
             config_content += "partition,cyclic,b,8192,4,{}\n".format(num_simd_lanes)
-            config_content += "partition,cyclic,bucket,8192,4,{}\n".format(num_simd_lanes)
+            config_content += "partition,cyclic,bucket,8193,4,{}\n".format(num_simd_lanes)
             config_content += "partition,cyclic,sum,512,4,{}\n".format(num_simd_lanes)
             config_content += "unrolling,init,loop1_outer,{}\n".format(num_simd_lanes)
             config_content += "unrolling,hist,loop1,{}\n".format(min(num_simd_lanes, 4))
