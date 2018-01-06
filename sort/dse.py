@@ -23,7 +23,7 @@ if __name__ == "__main__":
     dse_df = pd.DataFrame()
     for N in [2048]:
         for num_simd_lanes in range(1, 2):
-            for cycle_time in range(1, 5):
+            for cycle_time in range(1, 2):
                 # clean
                 sp.check_call(["make", "clean-trace"])
 
@@ -52,7 +52,8 @@ if __name__ == "__main__":
                 config_content += "unrolling,init,loop1_outer,{}\n".format(num_simd_lanes)
 
                 ### hist
-                config_content += "flatten,hist,67\n"
+                #config_content += "flatten,hist,67\n"      # 8603
+                config_content += "unrolling,hist,loop1,1\n"
                 config_content += "unrolling,hist,loop2,{}\n".format(num_simd_lanes)
 
                 ### local scan
