@@ -33,6 +33,7 @@ if __name__ == "__main__":
                     "CPPFLAGS=-DN={}".format(N),
                     "run-trace"
                 ]
+                sp.check_call(make_cmd)
 
                 # get path to aladdin
                 aladdin_home = os.environ["ALADDION_HOME"]
