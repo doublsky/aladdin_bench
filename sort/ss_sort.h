@@ -3,7 +3,7 @@
 
 #define TYPE int
 
-#define N 2048
+//#define N 2048
 #define ELEMENTSPERBLOCK 4
 #define NUMOFBLOCKS N/ELEMENTSPERBLOCK
 
