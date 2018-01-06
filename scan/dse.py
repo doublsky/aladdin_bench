@@ -1,13 +1,13 @@
 """
-Sweep gemm
+Sweep scan
 """
 
 import subprocess as sp
 import os
 import pandas as pd
 
-dse_filename = "ss_sort_dse.csv"
-summary_filename = "ss_sort_summary"
+dse_filename = "pp_scan_dse.csv"
+summary_filename = "pp_scan_summary"
 
 
 def calc_energy(df):
@@ -22,8 +22,8 @@ def calc_energy(df):
 if __name__ == "__main__":
     dse_df = pd.DataFrame()
     for N in [2048]:
-        for num_simd_lanes in range(1, 2):
-            for cycle_time in range(1, 2):
+        for num_simd_lanes in [1, 2, 4, 8, 16, 32]:
+            for cycle_time in range(1, 7):
                 # clean
                 sp.check_call(["make", "clean-trace"])
 
@@ -41,33 +41,16 @@ if __name__ == "__main__":
 
                 # create config file
                 ## array partition
-                config_content = "partition,cyclic,a,{},4,{}\n".format(N * 4, num_simd_lanes * 4)
-                config_content += "partition,cyclic,b,{},4,{}\n".format(N * 4, num_simd_lanes * 4)
-                config_content += "partition,cyclic,bucket,{},4,{}\n".format(N * 4 + 1, num_simd_lanes * 4)
-                config_content += "partition,cyclic,sum,{},4,{}\n".format(N // 4, num_simd_lanes * 4)
+                config_content = "partition,cyclic,bucket,{},4,{}\n".format(N * 4, num_simd_lanes)
+                config_content += "partition,cyclic,bucket2,{},4,{}\n".format(N * 4, num_simd_lanes)
+                config_content += "partition,cyclic,sum,{},4,{}\n".format(N // 4, num_simd_lanes)
 
                 ## loop unrolling
-                ### init
-                config_content += "unrolling,init,loop1_outer,{}\n".format(num_simd_lanes)
-
-                ### hist
-                config_content += "flatten,hist,67\n"
-                config_content += "unrolling,hist,loop2,{}\n".format(num_simd_lanes)
-
-                ### local scan
-                config_content += "flatten,local_scan,23\n"
-                config_content += "unrolling,local_scan,loop1_outer,{}\n".format(num_simd_lanes)
-
-                ### sum scan
-                config_content += "unrolling,sum_scan,loop2,{}\n".format(num_simd_lanes)
-
-                ### last step scan
-                config_content += "flatten,last_step_scan,44\n"
-                config_content += "unrolling,last_step_scan,loop3_outer,{}\n".format(num_simd_lanes)
-
-                ### update
-                config_content += "flatten,update,81\n"
-                config_content += "unrolling,update,loop3,{}\n".format(num_simd_lanes)
+                config_content += "flatten,local_scan,19"
+                config_content += "unrolling,local_scan,loop1_outer,{}".format(num_simd_lanes)
+                config_content += "unrolling,sum_scan,loop2,{}".format(num_simd_lanes)
+                config_content += "flatten,last_step_scan,37"
+                config_content += "unrolling,last_step_scan,loop3_outer,{}".format(num_simd_lanes)
 
                 ## others
                 config_content += "pipelining,1\n"
@@ -77,7 +60,7 @@ if __name__ == "__main__":
                     f.write(config_content)
 
                 aladdin_bin = os.path.join(aladdin_home, "common/aladdin")
-                aladdin_cmd = [aladdin_bin, "ss_sort", "dynamic_trace.gz", "config"]
+                aladdin_cmd = [aladdin_bin, "pp_scan", "dynamic_trace.gz", "config"]
                 sp.check_call(aladdin_cmd)
 
                 # process summary
