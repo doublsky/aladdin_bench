@@ -44,7 +44,7 @@ if __name__ == "__main__":
                 ## array partition
                 config_content = "partition,cyclic,a,{},4,{}\n".format(N * 4, num_simd_lanes * 4)
                 config_content += "partition,cyclic,b,{},4,{}\n".format(N * 4, num_simd_lanes * 4)
-                config_content += "partition,cyclic,bucket,{},4,{}\n".format(N * 4 + 1, num_simd_lanes * 16)
+                config_content += "partition,cyclic,bucket,{},4,{}\n".format(N * 4 + 1, num_simd_lanes * 4)
                 config_content += "partition,cyclic,sum,{},4,{}\n".format(N // 4, num_simd_lanes * 4)
 
                 ## loop unrolling
