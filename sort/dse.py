@@ -21,7 +21,7 @@ def calc_energy(df):
 
 if __name__ == "__main__":
     dse_df = pd.DataFrame()
-    for N in [2048]:
+    for N in [1024]:
         for num_simd_lanes in range(1, 2):
             for cycle_time in range(1, 2):
                 # clean
@@ -44,7 +44,7 @@ if __name__ == "__main__":
                 ## array partition
                 config_content = "partition,cyclic,a,{},4,{}\n".format(N * 4, num_simd_lanes)
                 config_content += "partition,cyclic,b,{},4,{}\n".format(N * 4, num_simd_lanes)
-                config_content += "partition,cyclic,bucket,{},4,{}\n".format(N * 4 + 1, num_simd_lanes * 32)
+                config_content += "partition,cyclic,bucket,{},4,{}\n".format(N * 4 + 1, num_simd_lanes * 16)
                 config_content += "partition,cyclic,sum,{},4,{}\n".format(N // 4, num_simd_lanes)
 
                 ## loop unrolling
