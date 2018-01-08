@@ -22,8 +22,8 @@ def calc_energy(df):
 if __name__ == "__main__":
     dse_df = pd.DataFrame()
     for N in [2048]:
-        for num_simd_lanes in [1, 2, 4, 8, 16, 32]:
-            for cycle_time in range(1, 7):
+        for num_simd_lanes in range(1, 2):
+            for cycle_time in range(1, 2):
                 # clean
                 sp.check_call(["make", "clean-trace"])
 
@@ -33,6 +33,7 @@ if __name__ == "__main__":
                     "CPPFLAGS=-DN={}".format(N),
                     "run-trace"
                 ]
+                sp.check_call(make_cmd)
 
                 # get path to aladdin
                 aladdin_home = os.environ["ALADDION_HOME"]
@@ -46,10 +47,8 @@ if __name__ == "__main__":
                 config_content += "partition,cyclic,sum,{},4,{}\n".format(N // 4, num_simd_lanes)
 
                 ## loop unrolling
-                config_content += "flatten,local_scan,19"
                 config_content += "unrolling,local_scan,loop1_outer,{}".format(num_simd_lanes)
                 config_content += "unrolling,sum_scan,loop2,{}".format(num_simd_lanes)
-                config_content += "flatten,last_step_scan,37"
                 config_content += "unrolling,last_step_scan,loop3_outer,{}".format(num_simd_lanes)
 
                 ## others
