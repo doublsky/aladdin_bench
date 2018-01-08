@@ -101,10 +101,10 @@ void ss_sort(int a[N], int b[N], int bucket[BUCKETSIZE], int sum[SCAN_RADIX]){
     //int bucket[BUCKETSIZE];
    //HIST
     init(bucket);
-    /*if (flag == 0)
+    if (flag == 0)
       hist(bucket, a, exp);
     else
-      hist(bucket, b, exp);*/
+      hist(bucket, b, exp);
 
     //SCAN
     //ignore for now.
