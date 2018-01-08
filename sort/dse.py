@@ -21,9 +21,9 @@ def calc_energy(df):
 
 if __name__ == "__main__":
     dse_df = pd.DataFrame()
-    for N in [2048]:
-        for num_simd_lanes in range(1, 5):
-            for cycle_time in range(1, 2):
+    for N in [1024, 2048, 2048]:
+        for num_simd_lanes in range(1, 9):
+            for cycle_time in range(1, 7):
                 # clean
                 sp.check_call(["make", "clean-trace"])
 
@@ -48,23 +48,10 @@ if __name__ == "__main__":
                 config_content += "partition,cyclic,sum,{},4,{}\n".format(N // 4, num_simd_lanes)
 
                 ## loop unrolling
-                ### init
                 config_content += "unrolling,init,loop1_outer,{}\n".format(num_simd_lanes * 16)
-
-                ### hist
-                #config_content += "unrolling,hist,loop2,{}\n".format(num_simd_lanes)
-
-                ### local scan
                 config_content += "unrolling,local_scan,loop1_outer,{}\n".format(num_simd_lanes)
-
-                ### sum scan
                 config_content += "unrolling,sum_scan,loop2,{}\n".format(num_simd_lanes)
-
-                ### last step scan
                 config_content += "unrolling,last_step_scan,loop3_outer,{}\n".format(num_simd_lanes)
-
-                ### update
-                #config_content += "unrolling,update,loop3,{}\n".format(num_simd_lanes)
 
                 ## others
                 config_content += "pipelining,1\n"
