@@ -56,18 +56,18 @@ if __name__ == "__main__":
                 config_content += "unrolling,hist,loop2,{}\n".format(num_simd_lanes)
 
                 ### local scan
-                config_content += "flatten,local_scan,23\n"
+                #config_content += "flatten,local_scan,23\n"
                 config_content += "unrolling,local_scan,loop1_outer,{}\n".format(num_simd_lanes)
 
                 ### sum scan
                 config_content += "unrolling,sum_scan,loop2,{}\n".format(num_simd_lanes)
 
                 ### last step scan
-                config_content += "flatten,last_step_scan,44\n"
+                #config_content += "flatten,last_step_scan,44\n"
                 config_content += "unrolling,last_step_scan,loop3_outer,{}\n".format(num_simd_lanes)
 
                 ### update
-                config_content += "flatten,update,81\n"
+                #config_content += "flatten,update,81\n"
                 config_content += "unrolling,update,loop3,{}\n".format(num_simd_lanes)
 
                 ## others
