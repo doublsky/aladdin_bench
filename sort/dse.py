@@ -21,9 +21,9 @@ def calc_energy(df):
 
 if __name__ == "__main__":
     dse_df = pd.DataFrame()
-    for N in [1024, 2048, 4096]:
-        for num_simd_lanes in range(1, 9):
-            for cycle_time in range(1, 7):
+    for N in [2048]:
+        for num_simd_lanes in range(1, 3):
+            for cycle_time in range(1, 2):
                 # clean
                 sp.check_call(["make", "clean-trace"])
 
@@ -49,7 +49,7 @@ if __name__ == "__main__":
 
                 ## loop unrolling
                 ### init
-                config_content += "unrolling,init,loop1_outer,{}\n".format(num_simd_lanes * 4)
+                config_content += "unrolling,init,loop1_outer,{}\n".format(num_simd_lanes * 16)
 
                 ### hist
                 config_content += "flatten,hist,67\n"
