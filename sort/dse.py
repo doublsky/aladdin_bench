@@ -42,17 +42,17 @@ if __name__ == "__main__":
 
                 # create config file
                 ## array partition
-                config_content = "partition,cyclic,a,{},4,{}\n".format(N * 4, num_simd_lanes * 32)
-                config_content += "partition,cyclic,b,{},4,{}\n".format(N * 4, num_simd_lanes * 32)
-                config_content += "partition,cyclic,bucket,{},4,{}\n".format(N * 4 + 1, num_simd_lanes * 32)
-                config_content += "partition,cyclic,sum,{},4,{}\n".format(N // 4, num_simd_lanes * 32)
+                config_content = "partition,cyclic,a,{},4,{}\n".format(N * 4, num_simd_lanes)
+                config_content += "partition,cyclic,b,{},4,{}\n".format(N * 4, num_simd_lanes)
+                config_content += "partition,cyclic,bucket,{},4,{}\n".format(N * 4 + 1, num_simd_lanes * 16)
+                config_content += "partition,cyclic,sum,{},4,{}\n".format(N // 4, num_simd_lanes)
 
                 ## loop unrolling
                 ### init
                 config_content += "unrolling,init,loop1_outer,{}\n".format(num_simd_lanes * 16)
 
                 ### hist
-                config_content += "unrolling,hist,loop2,{}\n".format(num_simd_lanes)
+                #config_content += "unrolling,hist,loop2,{}\n".format(num_simd_lanes)
 
                 ### local scan
                 config_content += "unrolling,local_scan,loop1_outer,{}\n".format(num_simd_lanes)
@@ -64,7 +64,7 @@ if __name__ == "__main__":
                 config_content += "unrolling,last_step_scan,loop3_outer,{}\n".format(num_simd_lanes)
 
                 ### update
-                config_content += "unrolling,update,loop3,{}\n".format(num_simd_lanes)
+                #config_content += "unrolling,update,loop3,{}\n".format(num_simd_lanes)
 
                 ## others
                 config_content += "pipelining,1\n"
