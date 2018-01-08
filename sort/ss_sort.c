@@ -94,17 +94,17 @@ void ss_sort(int a[N], int b[N], int bucket[BUCKETSIZE], int sum[SCAN_RADIX]){
   dmaLoad(&a[0], 0 * 1024 * sizeof(int), PAGE_SIZE);
   dmaLoad(&a[0], 1 * 1024 * sizeof(int), PAGE_SIZE);
 #endif
-	//for (exp = 0; exp < 2; exp+=2){
+	for (exp = 0; exp < 2; exp+=2){
     //NEW TRY
     //BLOCKING
     //4 keys per block
     //int bucket[BUCKETSIZE];
    //HIST
     init(bucket);
-    if (flag == 0)
+    /*if (flag == 0)
       hist(bucket, a, exp);
     else
-      hist(bucket, b, exp);
+      hist(bucket, b, exp);*/
 
     //SCAN
     //ignore for now.
@@ -123,7 +123,7 @@ void ss_sort(int a[N], int b[N], int bucket[BUCKETSIZE], int sum[SCAN_RADIX]){
       update(a, bucket, b, exp);
       flag = 0;
     }
-	//}
+	}
 #ifdef DMA_MODE
   dmaStore(&a[0], 0 * 1024 * sizeof(int), PAGE_SIZE);
   dmaStore(&a[0], 1 * 1024 * sizeof(int), PAGE_SIZE);
