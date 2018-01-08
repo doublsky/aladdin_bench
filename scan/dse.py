@@ -22,7 +22,7 @@ def calc_energy(df):
 if __name__ == "__main__":
     dse_df = pd.DataFrame()
     for N in [2048]:
-        for num_simd_lanes in range(1, 2):
+        for num_simd_lanes in range(1, 3):
             for cycle_time in range(1, 2):
                 # clean
                 sp.check_call(["make", "clean-trace"])
@@ -42,7 +42,7 @@ if __name__ == "__main__":
 
                 # create config file
                 ## array partition
-                config_content = "partition,cyclic,bucket,{},4,{}\n".format(N * 4, num_simd_lanes * 32)
+                config_content = "partition,cyclic,bucket,{},4,{}\n".format(N * 4, num_simd_lanes * 16)
                 config_content += "partition,cyclic,bucket2,{},4,{}\n".format(N * 4, num_simd_lanes * 16)
                 config_content += "partition,cyclic,sum,{},4,{}\n".format(N // 4, num_simd_lanes)
 
