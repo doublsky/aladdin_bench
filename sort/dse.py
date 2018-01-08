@@ -52,7 +52,7 @@ if __name__ == "__main__":
                 config_content += "unrolling,init,loop1_outer,{}\n".format(num_simd_lanes * 16)
 
                 ### hist
-                config_content += "flatten,hist,67\n"
+                #config_content += "flatten,hist,67\n"
                 config_content += "unrolling,hist,loop2,{}\n".format(num_simd_lanes)
 
                 ### local scan
