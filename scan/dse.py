@@ -42,7 +42,7 @@ if __name__ == "__main__":
 
                 # create config file
                 ## array partition
-                config_content = "partition,cyclic,bucket,{},4,{}\n".format(N * 4, num_simd_lanes * 16)
+                config_content = "partition,cyclic,bucket,{},4,{}\n".format(N * 4, num_simd_lanes * 32)
                 config_content += "partition,cyclic,bucket2,{},4,{}\n".format(N * 4, num_simd_lanes * 16)
                 config_content += "partition,cyclic,sum,{},4,{}\n".format(N // 4, num_simd_lanes)
 
