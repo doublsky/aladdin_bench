@@ -23,7 +23,7 @@ if __name__ == "__main__":
     dse_df = pd.DataFrame()
     for N in [2048]:
         for num_simd_lanes in range(1, 2):
-            for cycle_time in [1, 2, 4, 8]:
+            for cycle_time in range(1, 2):
                 # clean
                 sp.check_call(["make", "clean-trace"])
 
@@ -42,8 +42,8 @@ if __name__ == "__main__":
 
                 # create config file
                 ## array partition
-                config_content = "partition,cyclic,bucket,{},4,{}\n".format(N * 4, num_simd_lanes * 2)
-                config_content += "partition,cyclic,bucket2,{},4,{}\n".format(N * 4, num_simd_lanes * cycle_time)
+                config_content = "partition,cyclic,bucket,{},4,{}\n".format(N * 4, num_simd_lanes * 16)
+                config_content += "partition,cyclic,bucket2,{},4,{}\n".format(N * 4, num_simd_lanes * 16)
                 config_content += "partition,cyclic,sum,{},4,{}\n".format(N // 4, num_simd_lanes)
 
                 ## loop unrolling
@@ -53,7 +53,7 @@ if __name__ == "__main__":
 
                 ## others
                 config_content += "pipelining,1\n"
-                config_content += "cycle_time,{}\n".format(1)
+                config_content += "cycle_time,{}\n".format(cycle_time)
 
                 with open("config", "w") as f:
                     f.write(config_content)
