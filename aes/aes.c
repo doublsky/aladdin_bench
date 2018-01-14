@@ -192,9 +192,9 @@ void aes256_encrypt_ecb(aes256_context *ctx, uint8_t k[32], uint8_t buf[16])
     ecb1 : for (i = 0; i < sizeof(ctx->key); i++){
         ctx->enckey[i] = ctx->deckey[i] = k[i];
     }
-    ecb2 : for (i = 8;--i;){
+    /*ecb2 : for (i = 8;--i;){
         rcon = aes_expandEncKey(ctx->deckey, rcon);
-    }
+    }*/
 
     //DEC
     aes_addRoundKey_cpy(buf, ctx->enckey, ctx->key);
@@ -219,3 +219,24 @@ void aes256_encrypt_ecb(aes256_context *ctx, uint8_t k[32], uint8_t buf[16])
 #endif
 } /* aes256_encrypt */
 
+/*
+int main()
+{
+    aes256_context ctx;
+    uint8_t key[32];
+    uint8_t buf[16];
+    
+    int i;
+    
+    for (i = 0; i < 32; i++) {
+        key[i] = rand() % 256;
+    }
+    
+    for (i = 0; i < 16; i++) {
+        buf[i] = rand() % 256;
+    }
+    
+    aes256_encrypt_ecb(&ctx, key, buf);
+    
+    return 0;
+}*/
