@@ -1,0 +1,14 @@
+.*
+!.gitignore
+*.llvm
+*.s
+*-instrumented
+*_summary
+*.csv
+*.data
+labelmap
+dynamic_trace.gz
+dddg_parse_progress.out
+config
+*_dir
+generate

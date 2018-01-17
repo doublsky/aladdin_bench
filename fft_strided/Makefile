@@ -16,9 +16,6 @@ generate: $(FILES) generate.c
 	$(CC) $(MACROS) $(CFLAGS) -I../common -o generate $(SRCS) generate.c -lm
 	./generate
 
-hls: $(KERN).c $(KERN).h
-	vivado_hls hls.tcl
-
 clean:
 	rm -f $(KERN) generate output.data
 
