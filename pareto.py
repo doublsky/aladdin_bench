@@ -4,9 +4,9 @@ calculate pareto frontier
 
 import pandas as pd
 
-csv_filename = "scan/pp_scan_dse.csv"
-pareto_filename = "scan/pp_scan_pareto.csv"
-key1 = "N"
+csv_filename = "md/md_dse.csv"
+pareto_filename = "md/md_pareto.csv"
+key1 = "Num of Atoms"
 key2 = "Cycle Time (ns)"
 
 
@@ -18,14 +18,14 @@ def find_pareto_frontier(df):
 
         # check optimality
         for pareto_index, pareto_row in pareto_df.iterrows():
-            if df_row["Cycle (cycles)"] > pareto_row["Cycle (cycles)"] \
-                    and df_row["Avg Power (mW)"] > pareto_row["Avg Power (mW)"] \
-                    and df_row["Total Area (uM^2)"] > pareto_row["Total Area (uM^2)"]:
+            if df_row["Cycle (cycles)"] >= pareto_row["Cycle (cycles)"] \
+                    and df_row["Energy per Input (pJ/bit)"] >= pareto_row["Energy per Input (pJ/bit)"] \
+                    and df_row["Total Area (uM^2)"] >= pareto_row["Total Area (uM^2)"]:
                 is_pareto_optimal = False
                 break
-            if df_row["Cycle (cycles)"] < pareto_row["Cycle (cycles)"] \
-                    and df_row["Avg Power (mW)"] < pareto_row["Avg Power (mW)"] \
-                    and df_row["Total Area (uM^2)"] < pareto_row["Total Area (uM^2)"]:
+            if df_row["Cycle (cycles)"] <= pareto_row["Cycle (cycles)"] \
+                    and df_row["Energy per Input (pJ/bit)"] <= pareto_row["Energy per Input (pJ/bit)"] \
+                    and df_row["Total Area (uM^2)"] <= pareto_row["Total Area (uM^2)"]:
                 pareto_df = pareto_df.drop(pareto_index)
 
         # add if pareto optimal
@@ -37,6 +37,7 @@ def find_pareto_frontier(df):
 
 if __name__ == "__main__":
     df = pd.read_csv(csv_filename, index_col=None)
+    column_order = df.columns.tolist()
     print "Raw Data Size:", df.shape
     grouped_df = df.groupby([key1, key2])
     result_df = pd.DataFrame()
@@ -46,4 +47,4 @@ if __name__ == "__main__":
         result_df = result_df.append(pareto_frontier, ignore_index=True)
 
     print "Pareto Date Size:", result_df.shape
-    result_df.to_csv(pareto_filename, index=False)
+    result_df.to_csv(pareto_filename, columns=column_order, index=False)
