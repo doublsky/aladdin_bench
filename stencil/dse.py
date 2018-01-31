@@ -1,10 +1,11 @@
 """
-Sweep md
+Sweep stencil
 """
 
 import subprocess as sp
 import os
 import pandas as pd
+import numpy as np
 
 dse_filename = "stencil_dse.csv"
 summary_filename = "stencil_summary"
@@ -21,24 +22,24 @@ def calc_energy(df):
 
 if __name__ == "__main__":
     dse_df = pd.DataFrame()
-    for N in [16]:
-        for num_simd_lanes in range(1, 2):
-            for cycle_time in range(1, 2):
+    for N in np.power(2, range(7, 10)):
+        for num_simd_lanes in range(1, min(17, N+1)):
+            for cycle_time in range(1, 7):
                 # clean
                 sp.check_call(["make", "clean-trace"])
 
                 # compile with different num_atoms
                 make_cmd = [
                     "make",
-                    "CPPFLAGS=-DN={}".format(N),
+                    "MACROS=-DN={}".format(N),
                     "run-trace"
                 ]
                 sp.check_call(make_cmd)
 
                 # get path to aladdin
-                aladdin_home = os.environ["ALADDION_HOME"]
+                aladdin_home = os.environ["ALADDIN_HOME"]
                 if not aladdin_home:
-                    raise Exception("ALADDION_HOME not defined")
+                    raise Exception("ALADDIN_HOME not defined")
 
                 # create config file
                 config_content = "partition,cyclic,orig,{},4,{}\n".format(N * N * 4, num_simd_lanes * 9)

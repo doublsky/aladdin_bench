@@ -29,7 +29,7 @@ void md(TYPE d_force_x[nAtoms], TYPE d_force_y[nAtoms], TYPE d_force_z[nAtoms],
     {
       int jidx;
       TYPE delx, dely, delz, r2inv, r2invTEMP, r2invTEMP2, r2invTEMP3, t1, t2, t3;
-      jidx = NL[i*(nAtoms) + j];
+      jidx = NL[i*(maxNeighbors) + j];
       TYPE j_x = position_x[jidx];
       TYPE j_y = position_y[jidx];
       TYPE j_z = position_z[jidx];
@@ -74,7 +74,7 @@ TYPE distance(
 	return r2inv;
 }
 
-inline void insertInOrder(TYPE currDist[maxNeighbors],
+void insertInOrder(TYPE currDist[maxNeighbors],
 		int currList[maxNeighbors],
 		int j,
 		TYPE distIJ)
@@ -143,9 +143,9 @@ int buildNeighborList(TYPE position_x[nAtoms],
 				continue;
 			}
 			distIJ = distance(position_x, position_y, position_z, i, j);
-			//insertInOrder(currDist, currList, j, distIJ, maxNeighbors);
-			currList[j] = j;
-			currDist[j] = distIJ;
+			insertInOrder(currDist, currList, j, distIJ);
+			//currList[j] = j;
+			//currDist[j] = distIJ;
 		}
 		totalPairs += populateNeighborList(currDist, currList, i, NL);
 	}
@@ -194,7 +194,7 @@ int main(){
 	//Call MD accelerator
   for(i=0; i<nAtoms; i++){
           for(j = 0; j < maxNeighbors; ++j)
-            neighborList[i*(nAtoms) + j] = NL[i][j];
+            neighborList[i*(maxNeighbors) + j] = NL[i][j];
   }
 #ifdef GEM5
   resetGem5Stats();

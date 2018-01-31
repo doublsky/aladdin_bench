@@ -37,7 +37,7 @@ GET_LABELED_STMTS = $(TRACER_HOME)/bin/get-labeled-stmts
 MODE = LLVM_TRACE
 
 ALL_SRCS = $(SRCS)
-CPPFLAGS += -I$(ALADDIN_HOME) -I$(COMMON_DIR) -D$(MODE)
+CPPFLAGS = -I$(ALADDIN_HOME) -I$(COMMON_DIR) -D$(MODE)
 
 ifneq ($(DMA_MODE),)
 	ALL_SRCS += $(ALADDIN_HOME)/gem5/dma_interface.c
@@ -51,7 +51,7 @@ LLVM_OBJS = $(patsubst %.c, %-opt.llvm, $(ALL_SRCS))
 #########################################################
 
 labelmap: $(SRCS)
-	$(GET_LABELED_STMTS) $(SRCS) -- -I$(LLVM_HOME)/lib/clang/3.4/include $(CPPFLAGS)
+	$(GET_LABELED_STMTS) $(SRCS) -- -I$(LLVM_HOME)/lib/clang/3.4/include $(MACROS) $(CPPFLAGS)
 
 full.llvm: $(LLVM_OBJS)
 	llvm-link -o $@ $^ $(LOGGER)
@@ -66,6 +66,7 @@ $(EXEC)-instrumented: full.s
 	clang -g -O1 -S -fno-slp-vectorize -fno-vectorize -fno-unroll-loops \
         -fno-inline -fno-builtin \
 				-emit-llvm \
+				$(MACROS) \
 				$(CPPFLAGS) \
         $(BMARK_SPECIFIC_CFLAGS) \
         -o $*.llvm $<

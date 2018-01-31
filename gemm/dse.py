@@ -5,6 +5,7 @@ Sweep gemm
 import subprocess as sp
 import os
 import pandas as pd
+import numpy as np
 
 dse_filename = "bb_gemm_dse.csv"
 summary_filename = "bb_gemm_summary"
@@ -23,8 +24,8 @@ def calc_energy(df):
 
 if __name__ == "__main__":
     dse_df = pd.DataFrame()
-    for block_size in [8, 16, 32]:
-        for num_simd_lanes in range(1, block_size+1):
+    for block_size in np.power(2, range(6, 10)):
+        for num_simd_lanes in range(1, min(17, block_size+1)):
             for cycle_time in range(1, 7):
                 # clean
                 sp.check_call(["make", "clean-trace"])
@@ -32,15 +33,15 @@ if __name__ == "__main__":
                 # compile with different num_atoms
                 make_cmd = [
                     "make",
-                    "CPPFLAGS=-DBLOCKSIZE={}".format(block_size),
+                    "MACROS=-DBLOCKSIZE={}".format(block_size),
                     "run-trace"
                 ]
                 sp.check_call(make_cmd)
 
                 # get path to aladdin
-                aladdin_home = os.environ["ALADDION_HOME"]
+                aladdin_home = os.environ["ALADDIN_HOME"]
                 if not aladdin_home:
-                    raise Exception("ALADDION_HOME not defined")
+                    raise Exception("ALADDIN_HOME not defined")
 
                 # create config file
                 config_content = "partition,cyclic,x,{},4,{}\n".format(block_size * block_size * 4, num_simd_lanes)

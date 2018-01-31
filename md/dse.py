@@ -14,7 +14,7 @@ summary_filename = "md_summary"
 def calc_energy(df):
     num_df = df.apply(pd.to_numeric, errors="ignore")
     total_energy = num_df["Avg Power (mW)"] * num_df["Cycle (cycles)"] * num_df["Cycle Time (ns)"]
-    total_input_bits = num_df["Num of Atoms"] * 3 * 32 + num_df["Num of Atoms"] * num_df["Num of Atoms"] * 32
+    total_input_bits = num_df["Num of Atoms"] * 3 * 32 + num_df["Num of Atoms"] * num_df["Max Number of Neighbors"] * 32
     total_output_bits = num_df["Num of Atoms"] * 3 * 32
     num_df["Energy per Input (pJ/bit)"] = total_energy / total_input_bits
     num_df["Energy per Output (pJ/bit)"] = total_energy / total_output_bits
@@ -22,14 +22,14 @@ def calc_energy(df):
 
 if __name__ == "__main__":
     dse_df = pd.DataFrame()
-    for num_atoms in np.logspace(0, 10, base=2, dtype=int):
-        for max_neighbors in np.logspace(0, np.log(num_atoms), base=2, dtype=int):
+    for num_atoms in np.power(2, range(1, 9)):
+        for max_neighbors in np.power(2, range(1, int(np.log2(num_atoms))+1)):
             for num_simd_lanes in range(1, min(17, max_neighbors+1)):
-                for cycle_time in range(1, 7):
+                for cycle_time in range(2, 7):
                     # clean
                     sp.check_call(["make", "clean-trace"])
 
-                    # compile with different num_atoms
+                    # compile
                     make_cmd = [
                         "make",
                         "MACROS=-DnAtoms={} -DmaxNeighbors={}".format(num_atoms, max_neighbors),
@@ -49,7 +49,7 @@ if __name__ == "__main__":
                     config_content += "partition,cyclic,position_x,{},4,{}\n".format(num_atoms * 4, num_simd_lanes)
                     config_content += "partition,cyclic,position_y,{},4,{}\n".format(num_atoms * 4, num_simd_lanes)
                     config_content += "partition,cyclic,position_z,{},4,{}\n".format(num_atoms * 4, num_simd_lanes)
-                    config_content += "partition,cyclic,NL,{},4,{}\n".format(num_atoms * num_atoms * 4, num_simd_lanes)
+                    config_content += "partition,cyclic,NL,{},4,{}\n".format(num_atoms * max_neighbors * 4, num_simd_lanes)
                     config_content += "unrolling,md,loop_j,{}\n".format(num_simd_lanes)
                     config_content += "pipelining,1\n"
                     config_content += "cycle_time,{}\n".format(cycle_time)
@@ -73,6 +73,7 @@ if __name__ == "__main__":
                     )
                     summary = summary.transpose()
                     summary["Num of Atoms"] = num_atoms
+                    summary["Max Number of Neighbors"] = max_neighbors
                     summary["Num of SIMD Lanes"] = num_simd_lanes
                     summary["Cycle Time (ns)"] = cycle_time
                     dse_df = dse_df.append(summary)

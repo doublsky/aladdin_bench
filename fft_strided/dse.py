@@ -5,6 +5,7 @@ Sweep md
 import subprocess as sp
 import os
 import pandas as pd
+import numpy as np
 
 dse_filename = "fft_dse.csv"
 summary_filename = "fft_summary"
@@ -21,8 +22,8 @@ def calc_energy(df):
 
 if __name__ == "__main__":
     dse_df = pd.DataFrame()
-    for fft_size in [512, 1024, 2048]:
-        for num_simd_lanes in range(1, 17):
+    for fft_size in np.power(2, range(12, 13)):
+        for num_simd_lanes in range(1, min(17, fft_size+1)):
             for cycle_time in range(1, 7):
                 # clean
                 sp.check_call(["make", "clean-trace"])
