@@ -24,8 +24,10 @@ def calc_energy(df):
 
 if __name__ == "__main__":
     dse_df = pd.DataFrame()
-    for block_size in np.power(2, range(6, 10)):
-        for num_simd_lanes in range(1, min(17, block_size+1)):
+    #for block_size in np.power(2, range(6, 10)):
+    for block_size in [128, 256]:
+        #for num_simd_lanes in range(1, min(17, block_size+1)):
+        for num_simd_lanes in [126, 127, 128, 129, 130]:
             for cycle_time in range(1, 7):
                 # clean
                 sp.check_call(["make", "clean-trace"])
