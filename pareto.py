@@ -4,10 +4,9 @@ calculate pareto frontier
 
 import pandas as pd
 
-csv_filename = "md/md_dse.csv"
-pareto_filename = "md/md_pareto.csv"
-key1 = "Num of Atoms"
-key2 = "Cycle Time (ns)"
+sheet_name = "sort"
+pareto_filename = "/tmp/tmp_pareto.csv"
+key = ["N"]
 
 
 def find_pareto_frontier(df):
@@ -16,16 +15,23 @@ def find_pareto_frontier(df):
         # assume pareto optimal
         is_pareto_optimal = True
 
+        candidate_exe_time = df_row["Cycle (cycles)"] * df_row["Cycle Time (ns)"]
+        candidate_area = df_row["Total Area (uM^2)"]
+        candidate_energy = df_row["Energy per Input (pJ/bit)"]
+
         # check optimality
         for pareto_index, pareto_row in pareto_df.iterrows():
-            if df_row["Cycle (cycles)"] >= pareto_row["Cycle (cycles)"] \
-                    and df_row["Energy per Input (pJ/bit)"] >= pareto_row["Energy per Input (pJ/bit)"] \
-                    and df_row["Total Area (uM^2)"] >= pareto_row["Total Area (uM^2)"]:
+            pareto_exe_time = pareto_row["Cycle (cycles)"] * pareto_row["Cycle Time (ns)"]
+            pareto_area = pareto_row["Total Area (uM^2)"]
+            pareto_energy = pareto_row["Energy per Input (pJ/bit)"]
+            if candidate_exe_time >= pareto_exe_time \
+                    and candidate_energy >= pareto_energy \
+                    and candidate_area >= pareto_area:
                 is_pareto_optimal = False
                 break
-            if df_row["Cycle (cycles)"] <= pareto_row["Cycle (cycles)"] \
-                    and df_row["Energy per Input (pJ/bit)"] <= pareto_row["Energy per Input (pJ/bit)"] \
-                    and df_row["Total Area (uM^2)"] <= pareto_row["Total Area (uM^2)"]:
+            if candidate_exe_time <= pareto_exe_time \
+                    and candidate_energy <= pareto_energy \
+                    and candidate_area <= pareto_area:
                 pareto_df = pareto_df.drop(pareto_index)
 
         # add if pareto optimal
@@ -36,10 +42,10 @@ def find_pareto_frontier(df):
 
 
 if __name__ == "__main__":
-    df = pd.read_csv(csv_filename, index_col=None)
+    df = pd.read_excel("/Users/doublsky/OneDrive/FPGAvsASIC/aladdin.xlsx", sheet_name=sheet_name, index_col=None)
     column_order = df.columns.tolist()
     print "Raw Data Size:", df.shape
-    grouped_df = df.groupby([key1, key2])
+    grouped_df = df.groupby(key)
     result_df = pd.DataFrame()
 
     for name, group in grouped_df:
