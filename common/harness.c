@@ -7,7 +7,9 @@
 #include <assert.h>
 
 #define WRITE_OUTPUT
+#ifndef NO_CHECK_OUTPUT
 #define CHECK_OUTPUT
+#endif
 
 #include "support.h"
 

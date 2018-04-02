@@ -14,7 +14,7 @@ int main(int argc, char **argv)
 {
   struct bench_args_t data;
   int i, n, fd;
-  DTYPE typed;
+  double typed;
   struct prng_rand_t state;
 
   // Fill data structure
@@ -26,9 +26,14 @@ int main(int argc, char **argv)
 
   //Pre-calc twiddles
   for(n=0; n<(FFT_SIZE>>1); n++){
-      typed = (DTYPE)(twoPI*n/FFT_SIZE);
-      data.real_twid[n] = cos(typed);
-      data.img_twid[n] = (-1.0)*sin(typed);
+      typed = (double)(twoPI*n/FFT_SIZE);
+#if IS_DTYPE_FXP == 0
+      data.real_twid[n] = (DTYPE)cos(typed);
+      data.img_twid[n] = (DTYPE)((-1.0)*sin(typed));
+#else
+      data.real_twid[n] = (DTYPE)(cos(typed) * (1 << Q));
+      data.img_twid[n] = (DTYPE)((-1.0)*sin(typed) * (1 << Q));
+#endif
   }
 
   // Open and write
